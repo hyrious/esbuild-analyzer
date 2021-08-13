@@ -3,7 +3,7 @@ import path from "path";
 import { reverseSortedInputs } from "../src";
 
 let a = reverseSortedInputs(JSON.parse(fs.readFileSync(process.argv[2], "utf-8")));
-let sum = a.map(e => e[1]).reduce((a, b) => a + b);
+let sum = a.map(e => e[1]).reduce((a, b) => a + b, 0);
 
 function percent(size: number) {
     return ((size * 100 / sum).toFixed(2) + '%').padStart(6);
@@ -30,6 +30,7 @@ function collapse(a: [file: string, size: number][]) {
 }
 
 let depsOnly = process.argv.includes("--deps");
+let noDeps = process.argv.includes("--no-deps");
 let filtered: [file: string, size: number][] = [];
 for (let [file, size] of a) {
     let b = file.split(path.sep);
@@ -37,11 +38,16 @@ for (let [file, size] of a) {
     let pkg = i !== -1 && (b[i + 1][0] === '@' ? `${b[i + 1]}/${b[i + 2]}` : b[i + 1]);
     if (depsOnly) {
         pkg && filtered.push([pkg, size]);
+    } else if (noDeps) {
+        pkg || filtered.push([file, size]);
     } else {
         filtered.push([pkg || file, size]);
     }
 }
 
+let sum2 = 0;
 for (let [file, size, count] of collapse(filtered)) {
+    sum2 += size;
     print(size, count > 1 ? file + ` (${count})` : file);
 }
+console.log("sum =", sum2);

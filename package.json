@@ -1,0 +1,17 @@
+{
+  "name": "@hyrious/esbuild-analyzer",
+  "version": "0.1.0",
+  "description": "Tools around esbuild metafile.",
+  "main": "dist/index.js",
+  "repository": "hyrious/esbuild-analyzer",
+  "keywords": [
+    "esbuild",
+    "analyze"
+  ],
+  "author": "hyrious <hyrious@outlook.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^16.6.1",
+    "esbuild": "^0.12.20"
+  }
+}
